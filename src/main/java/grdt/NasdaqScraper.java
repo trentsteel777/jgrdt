@@ -1,12 +1,14 @@
 package grdt;
 
 import java.io.IOException;
+import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -38,9 +40,8 @@ public class NasdaqScraper {
     try {
       String symbol = "ibm";
       String url = "https://www.nasdaq.com/symbol/" + symbol + "/option-chain?money=all&expir=stan&dateindex=-1&page=1";
-
-      doc = org.jsoup.Jsoup.connect(url).timeout(100*1000).get();
-
+      doc = Jsoup.parse(new URL(url).openStream(),  "ISO-8859-1", url); 
+      
       Element form = doc.getElementById("optionchain");
       Elements tables = form.getElementsByTag("table");
       Element table = tables.get(0);
